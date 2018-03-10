@@ -15,25 +15,36 @@ public class Parser {
         String orig = args[0];
         String diff = args[1];
         String parm = args[2];
-        System.out.println(orig);
-        System.out.println(diff);
-        System.out.println(parm);
         try {
-            File file = new File("C:/IRU3.Main.output.sid");
+            File file = new File(orig);
+            File file_diff = new File(diff);
+            //"C:/IRU3.Main.output.sid"
+
             FileReader fr = new FileReader(file);
             BufferedReader reader = new BufferedReader(fr);
             String line = reader.readLine();
-            String par = "output";
             Set<String> ss = new HashSet<>();
-            String pattern = par + "::(\\w+) =";
+
+            FileReader fr_diff = new FileReader(file_diff);
+            BufferedReader reader_diff = new BufferedReader(fr_diff);
+            String line_diff = reader_diff.readLine();
+            Set<String> ss_diff = new HashSet<>();
+
+            String pattern = parm + "::(\\w+) =";
             while (line != null) {
-                //System.out.println(line);
                 Pattern r = Pattern.compile(pattern);
                 Matcher m = r.matcher(line);
                 while (m.find()) ss.add(m.group(1));
                 line = reader.readLine();
             }
-            System.out.println(ss);
+            while (line_diff != null) {
+                Pattern r_diff = Pattern.compile(pattern);
+                Matcher m_diff = r_diff.matcher(line_diff);
+                while (m_diff.find()) ss_diff.add(m_diff.group(1));
+                line_diff = reader_diff.readLine();
+            }
+            //System.out.println(ss_diff.removeAll(ss));
+            System.out.println(ss_diff);
         } catch (IOException e) {
             e.printStackTrace();
         }
