@@ -9,12 +9,6 @@ INTERFACE {
 	}
 
 	OUTPUTS {
-		svar IRU3.Main.output::O_ATT2_INVALID = {
-			type = "uint8";
-			array = "0";
-			ondemand = "0";
-		}
-		
 		svar IRU3.Main.output::O_ATT_INVALID = {
 			type = "uint8";
 			array = "0";
@@ -27,7 +21,7 @@ INTERFACE {
 			ondemand = "0";
 		}
 
-		svar IRU3.Main.output::O_IRU_XXX_FAULT = {
+		svar IRU3.Main.output::O_IRU_BITE_FAULT = {
 			type = "uint8";
 			array = "0";
 			ondemand = "0";
@@ -100,6 +94,12 @@ INTERFACE {
 		}
 
 		svar IRU3.Main.output::O_IR_TRUE_WIND_DIR = {
+			type = "real32";
+			array = "0";
+			ondemand = "0";
+		}
+
+		svar IRU3.Main.output::O_IR_MAG_TRK_ANG = {
 			type = "real32";
 			array = "0";
 			ondemand = "0";
@@ -196,6 +196,12 @@ INTERFACE {
 		}
 
 		svar IRU3.Main.output::O_ACCELEROMETER_FAULT = {
+			type = "uint8";
+			array = "0";
+			ondemand = "0";
+		}
+
+		svar IRU3.Main.output::O_MEMORY_FAULT = {
 			type = "uint8";
 			array = "0";
 			ondemand = "0";

@@ -4,51 +4,80 @@
 
 import java.io.*;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
+
+
 public class Parser {
+
+    //наш чудесный regexp
+    static String pattern = "::(\\w+) =";
 
     public static void main(String[] args) throws IOException {
 
-        String orig = args[0];
-        String diff = args[1];
-        String parm = args[2];
         try {
-            File file = new File(orig);
-            File file_diff = new File(diff);
-            //"C:/IRU3.Main.output.sid"
+            //чтение 2 файлов из args
+            File originalFile = new File(args[0]);
+            File comparedFile = new File(args[1]);
 
-            FileReader fr = new FileReader(file);
+            //читаем оригинальный файл полностью и отдельно первую строку
+            FileReader fr = new FileReader(originalFile);
             BufferedReader reader = new BufferedReader(fr);
-            String line = reader.readLine();
-            Set<String> ss = new HashSet<>();
+            String originalLine = reader.readLine();
+            Set<String> originalSet = new HashSet<>();
 
-            FileReader fr_diff = new FileReader(file_diff);
-            BufferedReader reader_diff = new BufferedReader(fr_diff);
-            String line_diff = reader_diff.readLine();
-            Set<String> ss_diff = new HashSet<>();
+            //читаем сравниваемый файл полностью и отдельно первую строку
+            fr = new FileReader(comparedFile);
+            BufferedReader comparedReader = new BufferedReader(fr);
+            String comparedLine = comparedReader.readLine();
+            Set<String> comparedSet = new HashSet<>();
 
-            String pattern = parm + "::(\\w+) =";
-            while (line != null) {
-                Pattern r = Pattern.compile(pattern);
-                Matcher m = r.matcher(line);
-                while (m.find()) ss.add(m.group(1));
-                line = reader.readLine();
+
+            //разбираем файлы на 2 set
+            while (originalLine != null) {
+                Matcher m = Pattern.compile(pattern).matcher(originalLine);
+                while (m.find()) originalSet.add(m.group(1));
+                originalLine = reader.readLine();
             }
-            while (line_diff != null) {
+            while (comparedLine != null) {
                 Pattern r_diff = Pattern.compile(pattern);
-                Matcher m_diff = r_diff.matcher(line_diff);
-                while (m_diff.find()) ss_diff.add(m_diff.group(1));
-                line_diff = reader_diff.readLine();
+                Matcher m_diff = r_diff.matcher(comparedLine);
+                while (m_diff.find()) comparedSet.add(m_diff.group(1));
+                comparedLine = comparedReader.readLine();
             }
-            //System.out.println(ss_diff.removeAll(ss));
-            System.out.println(ss_diff);
+            Set<String> originalSetCopy = originalSet;
+            Set<String> comparedSetCopy = comparedSet;
+            
+            originalSetCopy.removeAll(comparedSet);
+            Iterator iterator = originalSetCopy.iterator();
+            System.out.println("[differences]:");
+            while (iterator.hasNext()){
+                System.out.println(iterator.next());
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+    }
+
+    public Set<String> parseFile(String file) throws IOException {
+        File originalFile = new File(file);
+
+        FileReader fr = new FileReader(originalFile);
+        BufferedReader reader = new BufferedReader(fr);
+        String originalLine = reader.readLine();
+        Set<String> parseSet = new HashSet<>();
+
+        while (originalLine != null) {
+            Matcher m = Pattern.compile(pattern).matcher(originalLine);
+            while (m.find()) parseSet.add(m.group(1));
+            originalLine = reader.readLine();
+        }
+
+        return parseSet;
     }
 
 }
