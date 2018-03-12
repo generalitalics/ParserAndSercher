@@ -1,4 +1,4 @@
-/**
+package ru.ruru; /**
  * Created by Lemur on 05.03.2018.
  */
 
